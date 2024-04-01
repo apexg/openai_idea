@@ -5,7 +5,7 @@ const PROTOCOL = process.env.PROTOCOL ?? DEFAULT_PROTOCOL;
 const BASE_URL = process.env.BASE_URL ?? OPENAI_URL;
 
 import type { NextApiRequest } from "next";
-export async function requestOpenai(req: NextApiRequest) {
+export default async  function requestOpenai(req: NextApiRequest) {
   const apiKey = process.env.OPENAI_API_KEY;
 //   const openaiPath = req.headers.get("path");
 
