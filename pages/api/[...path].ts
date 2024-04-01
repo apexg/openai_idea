@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest } from "next/server";
 
 
 
@@ -9,8 +9,7 @@ const PROTOCOL = process.env.PROTOCOL ?? DEFAULT_PROTOCOL;
 const BASE_URL = process.env.BASE_URL ?? OPENAI_URL;
 
 export default  async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
+  req: NextRequest
 ) {
   const apiKey = process.env.OPENAI_API_KEY;
   let baseUrl = BASE_URL;
@@ -19,25 +18,17 @@ export default  async function handler(
     baseUrl = `${PROTOCOL}://${baseUrl}`;
   }
   
-  const openaiPath = ((req.query.path as string[]) || []).join("/"); 
-  console.log("[Proxy] ", openaiPath);
+  // const openaiPath = ((req.query.path as string[]) || []).join("/"); 
+  // console.log("[Proxy] ", openaiPath);
   console.log("[Base Url]", baseUrl);
-  try {
-    return fetch('https://api.openai.com/v1/chat/completions', {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,      
-      },
-      method: req.method,
-      body: req.body,
-    });    
-  } catch (e) {
-    console.error("[OpenAI] ", req.body, e);
-    return res.status(500).json(    
-      {
-        error: true,
-        msg: JSON.stringify(e),
-      }
-    );
-  }
+  
+  return fetch('https://api.openai.com/v1/chat/completions', {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`,      
+    },
+    method: req.method,
+    body: req.body,
+  });    
+  
 }
