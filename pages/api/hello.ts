@@ -9,5 +9,7 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>,
 ) {
+  
+  // console.log(process.env.OPENAI_API_KEY)
   res.status(200).json({ name: "John Doe" });
 }
